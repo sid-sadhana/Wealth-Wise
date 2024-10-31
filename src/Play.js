@@ -19,7 +19,7 @@ const Play=()=>{
     <div className="font-mono bg-black text-white w-screen h-screen">
       <h1>hello world</h1>
       <h1>i clicked - {click_text}</h1>
-      <button onClick={()=>{if(click_text==""){set_click_text("*click click*")}else set_click_text("")}}className="border-white border-2 p-4 mt-12">click me</button>
+      <button onClick={()=>{if(click_text===""){set_click_text("*click click*")}else set_click_text("")}}className="border-white border-2 p-4 mt-12">click me</button>
       <h1>i typed - {type_text}</h1>
       <input placeholder="type here" className="bg-black text-white" onChange={(e)=>{set_type_text(e.target.value)}}></input>
       <COne/>

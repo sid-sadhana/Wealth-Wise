@@ -1,5 +1,9 @@
 import axios from 'axios'
 import React,{useState} from 'react'
+
+axios.defaults.withCredentials = true;
+axios.defaults.baseURL = 'http://localhost:5500';
+
 const SignIn=()=>{
     const [username,set_username] = useState("")
     const [password,set_password] = useState("")
