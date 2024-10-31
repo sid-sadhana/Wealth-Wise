@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import COne from './components/COne.js'
+import COne from '../components/COne.js'
 const Play=()=>{
   const [click_text,set_click_text]=useState('')
   const [type_text,set_type_text]=useState('')

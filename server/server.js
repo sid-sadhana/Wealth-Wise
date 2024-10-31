@@ -76,14 +76,17 @@ app.post("/api/signin", async (req, res) => {
     }
 });
 
-app.get("/api/token", (req, res) => {
-    const token = req.cookies.token; 
+app.get("/api/get-verify-token",(req,res)=>{
+    const token = req.cookies.token
     if (token) {
-        res.status(200).json({ token });
+        if(jwt.verify(token,process.env.JWT_SECRET)){
+            res.status(200)
+        }
+        else res.status(202)
     } else {
-        res.status(404).json({ message: "no token found" });
+        res.status(201).json({ message: "no token found" });
     }
-});
+})
 
 app.listen(PORT, () => {
     console.log(`server is running on port ${PORT}`);
