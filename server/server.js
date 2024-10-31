@@ -13,7 +13,6 @@ mongoose.connect(process.env.MONGODB_URI)
 
 const app = express();
 
-
 app.use(cors({
     origin: 'http://localhost:3000',
     credentials: true,
@@ -25,7 +24,6 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser()); 
 const PORT = 5500;
-
 
 const user_schema = new mongoose.Schema({
     username: String,
@@ -40,7 +38,6 @@ const user_data = mongoose.model('User', user_schema);
 app.get("/", (req, res) => {
     res.send("hello world");
 });
-
 
 app.post("/api/signup", async (req, res) => {
     const already_exists = await user_data.exists({ "username": req.body.username });
@@ -61,7 +58,6 @@ app.post("/api/signup", async (req, res) => {
         res.status(409).json({ message: "User already exists" });
     }
 });
-
 
 app.post("/api/signin", async (req, res) => {
     const user_find = await user_data.findOne({ "username": req.body.username });
