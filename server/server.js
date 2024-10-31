@@ -8,8 +8,8 @@ const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 
 mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log('MongoDB connected'))
-    .catch(err => console.error('MongoDB connection error:', err));
+    .then(() => console.log('connected'))
+    .catch(err => console.error('connection error:', err));
 
 const app = express();
 
@@ -51,11 +51,11 @@ app.post("/api/signup", async (req, res) => {
             "investments": [],
         });
         await user_data_feed.save();
-        console.log("User registered");
-        res.status(201).json({ message: "User registered successfully" });
+        console.log("user registered");
+        res.status(201).json({ message: "user registered" });
     } else {
-        console.log("User already exists");
-        res.status(409).json({ message: "User already exists" });
+        console.log("user already exists");
+        res.status(409).json({ message: "user already exists" });
     }
 });
 
@@ -70,22 +70,21 @@ app.post("/api/signin", async (req, res) => {
             path: '/',
             maxAge: 3600000
         });
-        res.status(200).json({ message: "Login successful" });
+        res.status(200).json({ message: "login successful" });
     } else {
-        res.status(401).json({ message: "Login failed" });
+        res.status(401).json({ message: "login failed" });
     }
 });
 
 app.get("/api/token", (req, res) => {
-    //console.log("Request Cookies:", req.cookies);
     const token = req.cookies.token; 
     if (token) {
         res.status(200).json({ token });
     } else {
-        res.status(404).json({ message: "No token found" });
+        res.status(404).json({ message: "no token found" });
     }
 });
 
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`server is running on port ${PORT}`);
 });
