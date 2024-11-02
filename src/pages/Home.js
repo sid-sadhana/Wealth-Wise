@@ -1,9 +1,10 @@
 import '../styles/Home.css';
+import React from 'react'
 import Lottie from 'lottie-react';
 import title from '../assets/title.json'; 
 import subtitle from '../assets/subtitle.json'; 
+
 import {useNavigate} from 'react-router-dom'
-import calendar from '../assets/calendar.png';
 const Home=()=>{
     const navigate=useNavigate()
     return(
@@ -25,7 +26,7 @@ const Home=()=>{
             Log In
         </button>
         <button 
-            className="bg-[#6d6aaa] text-white pt-2 pb-2 pl-4 pr-4 rounded-full bg-opacity-50"
+            className="bg-black text-white pt-2 pb-2 pl-4 pr-4 rounded-full bg-opacity-20 border-white border-2"
             onClick={() => { navigate("/signup") }}
         >
             Sign Up
@@ -42,12 +43,11 @@ const Home=()=>{
         />
     </div>
     <div>
-        <button className="mt-16 text-white border-white text-lg bg-black bg-opacity-30 p-3 rounded-full">
+        <button onClick={()=>{navigate('/signup')}} className="mt-16 text-white border-white text-lg bg-black bg-opacity-30 p-3 rounded-full">
             Get Started
         </button>    
     </div>
-</div>
-
+</div>        
             </div>
     )
 }
