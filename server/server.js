@@ -89,6 +89,7 @@ app.post("/api/password",async(req,res)=>{
     if(/\s/.test(password)){
         res.status(400).send("error6")
     }
+    res.status(200).send("valid password")
 })
 
 app.post("/api/signin", async (req, res) => {

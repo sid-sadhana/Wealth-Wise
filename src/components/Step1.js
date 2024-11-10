@@ -14,16 +14,20 @@ const Step1=({send_to_parent1})=>{
             toast("Passwords do not match!")
         }
         else if(confirm_password===password){
-            if (
-                password.length < 8 ||               
-                !/[a-z]/.test(password) ||           
-                !/[A-Z]/.test(password) ||           
-                !/\d/.test(password) ||              
-                !/[!@#$%^&*(),.?":{}|<>\[\]]/.test(password)
-              ){
-                toast("Password must be at least 8 characters long, containing at least one uppercase letter, one lowercase letter, one number, and one special character (!@#$%^&*,.?\":{}|<>\[\])")
+            const response = await axios.post("/api/password",{password:password})
+            console.log(response)
+            if(response.status===400){
+                switch(response.data){
+                    case "error1":toast("Password must contain atleast 8 characters."); break;
+                    case "error2":toast("Password must contain atleast 8 characters."); break;
+                    case "error3":toast("Password must contain atleast 8 characters."); break;
+                    case "error4":toast("Password must contain atleast 8 characters."); break;
+                    case "error5":toast("Password must contain atleast 8 characters."); break;
+                    case "error6":toast("Password must contain atleast 8 characters."); break;
+                    default: toast("Something went wrong")
+                }
             }
-            else{
+            else if(response.status===200){
                 const response = await axios.post("/api/check-username",{username})
                 if(response.data==true){
                     toast("Username already taken!")
