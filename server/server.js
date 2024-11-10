@@ -39,25 +39,57 @@ app.get("/", (req, res) => {
     res.send("hello world");
 });
 
-app.post("/api/signup", async (req, res) => {
-    const already_exists = await user_data.exists({ "username": req.body.username });
-    if (!already_exists) {
-        const hash = await argon2.hash(req.body.password);
-        const user_data_feed = new user_data({
-            "username": req.body.username,
-            "password": hash,
-            "full_name": "",
-            "role": "user",
-            "investments": [],
-        });
-        await user_data_feed.save();
-        console.log("user registered");
-        res.status(201).json({ message: "user registered" });
-    } else {
-        console.log("user already exists");
-        res.status(409).json({ message: "user already exists" });
+// app.post("/api/signup", async (req, res) => {
+//     const already_exists = await user_data.exists({ "username": req.body.username });
+//     if (!already_exists) {
+//         const hash = await argon2.hash(req.body.password);
+//         const user_data_feed = new user_data({
+//             "username": req.body.username,
+//             "password": hash,
+//             "full_name": "",
+//             "role": "user",
+//             "investments": [],
+//         });
+//         await user_data_feed.save();
+//         console.log("user registered");
+//         res.status(201).json({ message: "user registered" });
+//     } else {
+//         console.log("user already exists");
+//         res.status(409).json({ message: "user already exists" });
+//     }
+// });
+
+app.post("/api/check-username",async(req,res)=>{
+    const user_find = await user_data.exists({"username":req.body.username})
+    if(user_find===null){
+        res.send(false)
     }
-});
+    else{
+        res.send(true)
+    }
+})
+
+app.post("/api/password",async(req,res)=>{
+    const password = req.body.password
+    if(password.length<8){
+        res.status(400).send("error1");
+    }
+    if(!/[a-z]/.test(password)){
+        res.status(400).send("error2");
+    }
+    if(!/[A-Z]/.test(password)){
+        res.status(400).send("error3");
+    }
+    if(!/\d/.test(password)){
+        res.status(400).send("error4");
+    }
+    if(!/[!@#$%^&*(),.?":{}<~\/\\>\[\]]/.test(password)){
+        res.status(400).send("error5")
+    }
+    if(/\s/.test(password)){
+        res.status(400).send("error6")
+    }
+})
 
 app.post("/api/signin", async (req, res) => {
     const user_find = await user_data.findOne({ "username": req.body.username });
