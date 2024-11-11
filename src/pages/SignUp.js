@@ -8,7 +8,7 @@ import icons from '../assets/man3.json';
 import { useNavigate } from 'react-router-dom';
 import MultiStep from '../components/MultiStep';
 import Step1 from '../components/Step1'
-import { set } from 'mongoose';
+import Step2 from '../components/Step2'
 
 const SignUp = () => {
     const navigate = useNavigate();
@@ -70,9 +70,10 @@ const SignUp = () => {
                     />
                 </div>
 
-                <div className="border w-2/4 flex flex-col items-center justify-center">
-                    <MultiStep className="w-[95%] bg-transparent border h-1" total="w-[95%] bg-transparent border rounded-full h-1" progress={progress_state} />
-                    <Step1 send_to_parent1={handle_name}/>
+                <div className="w-2/4 flex flex-col items-center justify-center mb-24">
+                    <MultiStep className="w-[95%] bg-transparent h-1" total="w-[95%] bg-transparent rounded-full h-1" progress={progress_state} />
+                    {progress_state<50 && <Step1 send_to_parent1={handle_name}/>}
+                    {progress_state>=50 && <Step2 send_to_parent1={handle_name}/>}
                     {/* <button className="mt-4" onClick={initiate_signup}>Sign Up</button> */}
                 </div>
 

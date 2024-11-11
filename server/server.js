@@ -39,58 +39,42 @@ app.get("/", (req, res) => {
     res.send("hello world");
 });
 
-// app.post("/api/signup", async (req, res) => {
-//     const already_exists = await user_data.exists({ "username": req.body.username });
-//     if (!already_exists) {
-//         const hash = await argon2.hash(req.body.password);
-//         const user_data_feed = new user_data({
-//             "username": req.body.username,
-//             "password": hash,
-//             "full_name": "",
-//             "role": "user",
-//             "investments": [],
-//         });
-//         await user_data_feed.save();
-//         console.log("user registered");
-//         res.status(201).json({ message: "user registered" });
-//     } else {
-//         console.log("user already exists");
-//         res.status(409).json({ message: "user already exists" });
-//     }
-// });
+app.post("/api/check-username", async (req, res) => {
+    const username = req.body.username;
 
-app.post("/api/check-username",async(req,res)=>{
-    const user_find = await user_data.exists({"username":req.body.username})
-    if(user_find===null){
-        res.send(false)
-    }
-    else{
-        res.send(true)
-    }
-})
+    const username_regex = /^[a-z0-9]*_?[a-z0-9]*$/;
 
-app.post("/api/password",async(req,res)=>{
-    const password = req.body.password
-    if(password.length<8){
-        res.status(400).send("error1");
+    if (!username_regex.test(username)) {
+        return res.status(201).send("error_username_invalid");
     }
-    if(!/[a-z]/.test(password)){
-        res.status(400).send("error2");
+    if (username.length < 4 || username.length > 30) {
+        return res.status(201).send("error_username_length");
     }
-    if(!/[A-Z]/.test(password)){
-        res.status(400).send("error3");
+    const user_find = await user_data.exists({ "username": username });
+    if (user_find === null) {
+        return res.send(false);  
+    } else {
+        return res.send(true);  
     }
-    if(!/\d/.test(password)){
-        res.status(400).send("error4");
+});
+
+app.post("/api/check-password", async (req, res) => {
+    const password = req.body.password;
+
+    if (password === "") return res.status(201).send("error7");
+    if (password.length < 8 || password.length>30) return res.status(201).send("error1");
+    if (!/[a-z]/.test(password)) return res.status(201).send("error2");
+    if (!/[A-Z]/.test(password)) return res.status(201).send("error3");
+    if (!/\d/.test(password)) return res.status(201).send("error4");
+    if (!/[-!@#$%^=+&*(),.?":{}<~\/\\\[\]]/.test(password)) return res.status(201).send("error5");
+    if (/\s/.test(password)) return res.status(201).send("error6");
+
+    if (!/^[a-zA-Z0-9!@#$%^&*(),.+-=?":{}<~\/\\\[\]]+$/.test(password)) {
+        return res.status(201).send("error8");
     }
-    if(!/[!@#$%^&*(),.?":{}<~\/\\>\[\]]/.test(password)){
-        res.status(400).send("error5")
-    }
-    if(/\s/.test(password)){
-        res.status(400).send("error6")
-    }
-    res.status(200).send("valid password")
-})
+
+    return res.status(200).send("valid password");
+});
 
 app.post("/api/signin", async (req, res) => {
     const user_find = await user_data.findOne({ "username": req.body.username });
@@ -109,17 +93,18 @@ app.post("/api/signin", async (req, res) => {
     }
 });
 
-app.get("/api/get-verify-token",(req,res)=>{
-    const token = req.cookies.token
+app.get("/api/get-verify-token", (req, res) => {
+    const token = req.cookies.token;
     if (token) {
-        if(jwt.verify(token,process.env.JWT_SECRET)){
-            res.status(200)
+        if (jwt.verify(token, process.env.JWT_SECRET)) {
+            res.status(200);
+        } else {
+            res.status(202);
         }
-        else res.status(202)
     } else {
         res.status(201).json({ message: "no token found" });
     }
-})
+});
 
 app.listen(PORT, () => {
     console.log(`server is running on port ${PORT}`);
