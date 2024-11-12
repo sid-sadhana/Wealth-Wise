@@ -26,10 +26,10 @@ const Home=()=>{
             Log In
         </button>
         <button 
-            className="bg-black text-white pt-2 pb-2 pl-4 pr-4 rounded-full bg-opacity-20 border-white border-2"
+            className="bg-black text-white pt-2 pb-2 pl-4 pr-4 rounded-full bg-opacity-10 border-white border-2"
             onClick={() => { navigate("/signup") }}
         >
-            Sign Up
+            <p>Sign Up</p>
         </button>
     </div>
 </nav>
@@ -43,8 +43,8 @@ const Home=()=>{
         />
     </div>
     <div>
-        <button onClick={()=>{navigate('/signup')}} className="mt-16 text-white border-white text-lg bg-black bg-opacity-30 p-3 rounded-full">
-            Get Started
+        <button onClick={()=>{navigate('/signup')}} className="border mt-16 text-white border-black text-lg bg-black bg-opacity-30 p-3 rounded-full hover:drop-shadow-lg hover:shadow-lg drop-shadow shadow transition-all duration-300 ease-in-out">
+            <p className="font-mono">Get Started</p>
         </button>    
     </div>
 </div>        

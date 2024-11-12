@@ -31,25 +31,25 @@ const Step1 = ({ send_to_parent2 }) => {
                 pauseOnHover
                 theme="dark"
             />
-            <div className="relative w-8/12 group">
+            <div className="w-8/12">
                 <div className="-inset-0.5 bg-gradient-to-r from-transparent to-transparent rounded-2xl opacity-60 group-focus:opacity-75 transition duration-300 blur-sm"></div>
                 <input
                     type="text"
                     onChange={(e) => { set_fn(e.target.value); }}
                     value={fn}
                     placeholder="First Name"
-                    className="relative w-full outline-none text-white text-center border-none rounded-2xl transition-all duration-300 bg-white bg-opacity-[3%] p-2 focus:bg-white focus:bg-opacity-5 focus:drop-shadow-2xl focus:shadow-2xl drop-shadow shadow placeholder:text-gray-300 ease-in-out"
+                    className="w-full outline-none text-white text-center border-none rounded-2xl transition-all duration-300 bg-white bg-opacity-[3%] p-2 focus:bg-white focus:bg-opacity-5 focus:drop-shadow-2xl focus:shadow-2xl drop-shadow shadow placeholder:text-gray-300 ease-in-out"
                 />
             </div>
 
-            <div className="relative w-8/12 group">
+            <div className="w-8/12">
                 <div className="-inset-0.5 bg-gradient-to-r from-transparent to-transparent rounded-2xl opacity-60 group-focus:opacity-75 transition duration-300 blur-sm"></div>
                 <input
                     type="text"
                     onChange={(e) => { set_ln(e.target.value); }}
                     value={ln}
                     placeholder="Last Name"
-                    className="relative w-full outline-none text-white text-center border-none rounded-2xl transition-all duration-300 bg-white bg-opacity-[3%] p-2 focus:bg-white focus:bg-opacity-5 focus:drop-shadow-2xl focus:shadow-2xl drop-shadow shadow placeholder:text-gray-300 ease-in-out"
+                    className="w-full outline-none text-white text-center border-none rounded-2xl transition-all duration-300 bg-white bg-opacity-[3%] p-2 focus:bg-white focus:bg-opacity-5 focus:drop-shadow-2xl focus:shadow-2xl drop-shadow shadow placeholder:text-gray-300 ease-in-out"
                 />
             </div>
             <div className="w-full flex flex-row justify-center gap-28">
