@@ -9,6 +9,9 @@ import { useNavigate } from 'react-router-dom';
 import MultiStep from '../components/MultiStep';
 import Step1 from '../components/Step1'
 import Step2 from '../components/Step2'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const SignUp = () => {
     const navigate = useNavigate();
@@ -20,6 +23,10 @@ const SignUp = () => {
 
     const [progress_state,set_progress_state] = useState("0");
 
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
     const handle_cred=(data)=>{
         set_username(data.username)
         set_password(data.password)
@@ -27,26 +34,45 @@ const SignUp = () => {
         console.log(progress_state)
     }
 
-    const handle_name=(data)=>{
+    const handle_name=async(data)=>{
         set_first_name(data.first_name)
         set_last_name(data.last_name)
         set_progress_state(data.progress_state)
-        console.log(progress_state)
-    }
-
-    const initiate_signup = async () => {
-        if (username !== ""){
-            const signup_data = {
-                username: username,
-                password: password
-            };
-            const response = await axios.post("http://localhost:5500/api/signup", signup_data);
-            console.log(response.data.message);
+        if(data.progress_state==="100"){
+            const response = await axios.post("http://localhost:5500/api/signup",{username:username,password:password,first_name:first_name,last_name:last_name})
+            if(response.status===200){
+                toast.success('Registration Successful!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                });
+                navigate("/signin")
+            }
+            else{
+                toast.error('Username already exists!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                });
+                await sleep(2000)
+                window.location.reload()
+            }
         }
-    };
+    }
 
     return (
         <div id="bg">
+            <ToastContainer/>
             <nav className="flex justify-between items-center m-8">
                 <div className="h-8">
                     <Lottie

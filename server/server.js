@@ -6,6 +6,9 @@ const argon2 = require('argon2');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
+const cryptr = require("cryptr")
+
+
 
 mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log('connected'))
@@ -106,6 +109,26 @@ app.get("/api/get-verify-token", (req, res) => {
         res.status(201).json({ message: "no token found" });
     }
 });
+
+app.post("/api/signup",async(req,res)=>{
+    const user_find = await user_data.exists({ "username": req.body.username });
+    if(user_find!=null){
+        res.status(201).send("Username Already Exists!")
+    }
+    else{
+        const hash = await argon2.hash(req.body.password);
+        const make_user = new user_data({
+            username: req.body.username,
+            password: hash,
+            role: "user",
+            full_name:req.body.first_name+" "+req.body.last_name,
+            investments: []
+          });
+        await make_user.save()
+        console.log("saved")
+        res.status(200).send("Registration Successful!")
+    }
+})
 
 app.listen(PORT, () => {
     console.log(`server is running on port ${PORT}`);

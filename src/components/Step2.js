@@ -31,9 +31,8 @@ const Step1 = ({ send_to_parent2 }) => {
                 pauseOnHover
                 theme="dark"
             />
-            {/* Username Input */}
             <div className="relative w-8/12 group">
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-transparent to-transparent rounded-2xl opacity-60 group-focus:opacity-75 transition duration-300 blur-sm"></div>
+                <div className="-inset-0.5 bg-gradient-to-r from-transparent to-transparent rounded-2xl opacity-60 group-focus:opacity-75 transition duration-300 blur-sm"></div>
                 <input
                     type="text"
                     onChange={(e) => { set_fn(e.target.value); }}
@@ -43,9 +42,8 @@ const Step1 = ({ send_to_parent2 }) => {
                 />
             </div>
 
-            {/* Password Input */}
             <div className="relative w-8/12 group">
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-transparent to-transparent rounded-2xl opacity-60 group-focus:opacity-75 transition duration-300 blur-sm"></div>
+                <div className="-inset-0.5 bg-gradient-to-r from-transparent to-transparent rounded-2xl opacity-60 group-focus:opacity-75 transition duration-300 blur-sm"></div>
                 <input
                     type="text"
                     onChange={(e) => { set_ln(e.target.value); }}
@@ -54,9 +52,9 @@ const Step1 = ({ send_to_parent2 }) => {
                     className="relative w-full outline-none text-white text-center border-none rounded-2xl transition-all duration-300 bg-white bg-opacity-[3%] p-2 focus:bg-white focus:bg-opacity-5 focus:drop-shadow-2xl focus:shadow-2xl drop-shadow shadow placeholder:text-gray-300 ease-in-out"
                 />
             </div>
-            <div>
-            <button className="bg-black w-8/12 text-white p-2 bg-opacity-30 rounded-full border-black border drop-shadow shadow hover:bg-opacity-40 transition-all duration-300 ease-in-out" onClick={go_back}>Back</button>
-            <button className="bg-black w-8/12 text-white p-2 bg-opacity-30 rounded-full border-black border drop-shadow shadow hover:bg-opacity-40 transition-all duration-300 ease-in-out" onClick={export_name}>Finish</button>
+            <div className="w-full flex flex-row justify-center gap-28">
+            <button className="bg-black w-3/12 text-white p-2 bg-opacity-30 rounded-full border-black border drop-shadow shadow hover:bg-opacity-40 transition-all duration-300 ease-in-out" onClick={go_back}>Back</button>
+            <button className="bg-black w-3/12 text-white p-2 bg-opacity-30 rounded-full border-black border drop-shadow shadow hover:bg-opacity-40 transition-all duration-300 ease-in-out" onClick={export_name}>Finish</button>
             </div>
         </div>
     );
