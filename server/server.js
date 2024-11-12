@@ -59,6 +59,7 @@ app.post("/api/check-username", async (req, res) => {
 });
 
 app.post("/api/check-password", async (req, res) => {
+    console.log(req.body)
     const password = req.body.password;
 
     if (password === "") return res.status(201).send("error7");

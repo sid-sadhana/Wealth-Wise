@@ -20,13 +20,19 @@ const SignUp = () => {
 
     const [progress_state,set_progress_state] = useState("0");
 
-    const handle_name=(data)=>{
+    const handle_cred=(data)=>{
         set_username(data.username)
         set_password(data.password)
         set_progress_state(data.progress_state)
         console.log(progress_state)
     }
 
+    const handle_name=(data)=>{
+        set_first_name(data.first_name)
+        set_last_name(data.last_name)
+        set_progress_state(data.progress_state)
+        console.log(progress_state)
+    }
 
     const initiate_signup = async () => {
         if (username !== ""){
@@ -72,9 +78,8 @@ const SignUp = () => {
 
                 <div className="w-2/4 flex flex-col items-center justify-center mb-24">
                     <MultiStep className="w-[95%] bg-transparent h-1" total="w-[95%] bg-transparent rounded-full h-1" progress={progress_state} />
-                    {progress_state<50 && <Step1 send_to_parent1={handle_name}/>}
-                    {progress_state>=50 && <Step2 send_to_parent1={handle_name}/>}
-                    {/* <button className="mt-4" onClick={initiate_signup}>Sign Up</button> */}
+                    {progress_state<50 && <Step1 send_to_parent1={handle_cred} username={username} password={password}/>}
+                    {progress_state>=50 && <Step2 send_to_parent2={handle_name}/>}
                 </div>
 
             </div>
