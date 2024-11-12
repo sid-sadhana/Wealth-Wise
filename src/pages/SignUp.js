@@ -85,7 +85,7 @@ const SignUp = () => {
                 <div className="flex items-center">
                     <button 
                         className="bg-black text-white pt-2 pb-2 pl-4 pr-4 rounded-full bg-opacity-20 border-white border-2"
-                        onClick={() => { navigate("/signup") }}
+                        onClick={() => { navigate("/signin") }}
                     >
                         Log In
                     </button>
