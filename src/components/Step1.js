@@ -38,7 +38,7 @@ const Step1 = ({ send_to_parent1, username = '', password = '' }) => {
             return true;
         }
 
-        const response = await axios.post("/api/check-password", { password: pass });
+        const response = await axios.post("http://localhost:5500/api/check-password", { password: pass });
         if (response.status === 201) {
             // Handle errors from password check response
             switch (response.data) {
@@ -133,7 +133,7 @@ const Step1 = ({ send_to_parent1, username = '', password = '' }) => {
             return true;
         }
 
-        const username_response = await axios.post("/api/check-username", { username: user });
+        const username_response = await axios.post("http://localhost:5500/api/check-username", { username: user });
         if (username_response.status === 201) {
             toast.error("Username contains invalid characters. Only letters, numbers, and one underscore are allowed.", {
                 position: "top-right",

@@ -15,11 +15,18 @@ useEffect(()=>{
 },[])
 
 return(
-    <div className="w-full bg-black">
-    <div id="bg2">
-        <h2>Dashboard</h2>
-    </div>
-    </div>
+<div id="bg2" className="bg-black h-screen w-full">
+<div className="flex">
+<div className="mt-[10vh] h-[80vh] mb-[10vh] w-16 border-r-2 border-r-white">
+<h1 className="text-white ">.</h1>
+</div>
+<div className="border h-12 w-32 border-red-500">
+<h1 className="text-white">.</h1>
+</div>
+</div>
+</div>
+
+
 )
 }
 export default Dashboard
