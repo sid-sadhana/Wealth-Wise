@@ -1,9 +1,0 @@
-#bg {
-    background-image: url('dg.svg');
-    background-size: cover; /* Change to 'contain' if you want to show the entire image */
-    background-repeat: no-repeat;
-    background-position: center; /* Center the image */
-    width: 100vw;  /* Make it span the entire width of the viewport */
-    height: 100vh; /* Make it span the entire height of the viewport */
-    overflow: hidden; /* Prevent overflow */
-}

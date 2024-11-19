@@ -2,4 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
-  
+#bg {
+    background-image: url('assets/dg.svg');
+    background-size: cover; /* Change to 'contain' if you want to show the entire image */
+    background-repeat: no-repeat;
+    background-position: center; /* Center the image */
+    width: 100vw;  /* Make it span the entire width of the viewport */
+    height: 100vh; /* Make it span the entire height of the viewport */
+    overflow: hidden;
+    background-color: black; /* Prevent overflow */
+}
+#bg2 {
+    background-image: url('assets/dg.svg');
+    background-size: cover; /* Change to 'contain' if you want to show the entire image */
+    background-repeat: no-repeat;
+    background-position: center; /* Center the image */
+    width: 100vw;  /* Make it span the entire width of the viewport */
+    height: 100vh; /* Make it span the entire height of the viewport */
+    overflow: hidden;
+    opacity:80%;
+    background-color: black;
+    filter:blur(2.5rem)
+}

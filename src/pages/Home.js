@@ -1,4 +1,4 @@
-import '../styles/Home.css';
+import '../index'
 import React from 'react'
 import Lottie from 'lottie-react';
 import title from '../assets/title.json'; 
