@@ -101,7 +101,9 @@ app.get("/api/get-verify-token", (req, res) => {
     const token = req.cookies.token;
     if (token) {
         if (jwt.verify(token, process.env.JWT_SECRET)) {
-            res.status(200);
+            const decoded = jwt.decode(token);
+            console.log(decoded);
+            res.status(200).json({token:decoded});
         } else {
             res.status(202);
         }

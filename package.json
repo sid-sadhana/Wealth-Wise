@@ -18,6 +18,7 @@
     "dotenv": "^16.4.5",
     "embla-carousel-autoplay": "^8.3.1",
     "express": "^4.21.1",
+    "generate-avatar": "^1.4.10",
     "jsonwebtoken": "^9.0.2",
     "lottie-react": "^2.4.0",
     "mongodb": "^6.10.0",
