@@ -1,5 +1,5 @@
 import Sidebar from "../components/Sidebar"
-const Dashboard=()=>{
+const Track=()=>{
     return(
         <div>
         <Sidebar>
@@ -8,4 +8,4 @@ const Dashboard=()=>{
         </div>
     )
 }
-export default Dashboard;
+export default Track;
