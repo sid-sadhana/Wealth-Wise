@@ -3,11 +3,12 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import { Play, Home, SignUp, SignIn, Dashboard ,Track,Holdings, Settings} from './route-import/route-import.js';
 import {Route,Routes,BrowserRouter} from 'react-router-dom'
+import ChartOne from "./components/ChartOne.js"
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <BrowserRouter>
     <Routes>
-        <Route path="/play" element={<Play/>}/>
+        <Route path="/play" element={<ChartOne/>}/>
         <Route path="/" element={<Home/>}/>
         <Route path="/home" element={<Home/>}/>
         <Route path="/signup" element={<SignUp/>} />

@@ -3,7 +3,9 @@ const Holdings=()=>{
     return(
         <div>
         <Sidebar>
-            <div className="w-12 h-12 border-white border"></div>
+        <div class="relative">
+        <input type="file" className="bg-black bg-opacity-20 text-white border-white border-opacity-20 border rounded-xl"/>
+        </div>
         </Sidebar>
         </div>
     )
