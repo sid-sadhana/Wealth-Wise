@@ -17,12 +17,47 @@ ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement, Title, T
 const ChartOne = ({mainstock}) => {
   const [jsonData, setJsonData] = useState([]);
 
-  // Fetch data
+  const date = new Date();
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+  const dd = String(date.getDate()).padStart(2, '0');
+  
+  const formattedDate = `${yyyy}-${mm}-${dd}`;
+  console.log(formattedDate);
+const currentDate = new Date(formattedDate);
+currentDate.setDate(currentDate.getDate() - 7);
+const weekAgoYyyy = currentDate.getFullYear();
+const weekAgoMm = String(currentDate.getMonth() + 1).padStart(2, '0');
+const weekAgoDd = String(currentDate.getDate()).padStart(2, '0');
+const weekAgoFormattedDate = `${weekAgoYyyy}-${weekAgoMm}-${weekAgoDd}`;
+
+//week agoooooo
+console.log(weekAgoFormattedDate);
+currentDate.setMonth(currentDate.getMonth() - 1);
+
+const monthAgoYyyy = currentDate.getFullYear();
+const monthAgoMm = String(currentDate.getMonth() + 1).padStart(2, '0');
+const monthAgoDd = String(currentDate.getDate()).padStart(2, '0');
+const monthAgoFormattedDate = `${monthAgoYyyy}-${monthAgoMm}-${monthAgoDd}`;
+
+//month agooooooo
+console.log(monthAgoFormattedDate);
+
+
+const yearAgoYyyy = currentDate.getFullYear()-1;
+const yearAgoMm = String(currentDate.getMonth() + 1).padStart(2, '0');
+const yearAgoDd = String(currentDate.getDate()).padStart(2, '0');
+const yearAgoFormattedDate = `${yearAgoYyyy}-${yearAgoMm}-${yearAgoDd}`;
+
+//year agoooooooo
+console.log(yearAgoFormattedDate);
+
+const [start_date,set_start_date]=useState(weekAgoFormattedDate)
   useEffect(() => {
     const getChart1 = async () => {
       try {
         const response = await axios.get(
-          "https://api.polygon.io/v2/aggs/ticker/SPY/range/1/day/2023-03-01/2023-03-24?sort=asc&apiKey=oQ2SyGnp9cYRj0BQKrMHFLdplkp9kCtH"
+          "https://api.polygon.io/v2/aggs/ticker/SPY/range/1/day/"+start_date+"/"+formattedDate+"?sort=asc&apiKey=oQ2SyGnp9cYRj0BQKrMHFLdplkp9kCtH"
         );
         setJsonData(response.data.results);
       } catch (error) {
@@ -36,19 +71,14 @@ const ChartOne = ({mainstock}) => {
   if (jsonData.length === 0) {
     return <div>Loading chart...</div>;
   }
-
-  // Calculate max and min prices dynamically
   const maxPrice = Math.max(...jsonData.map((item) => item.c));
   const minPrice = Math.min(...jsonData.map((item) => item.c));
 
-  // Round min and max prices for cleaner results
   const roundedMin = Math.floor(minPrice);
   const roundedMax = Math.ceil(maxPrice);
 
-  // Calculate step size to ensure 5 ticks
-  const stepSizeY = (roundedMax - roundedMin) / 4; // Divide into 4 intervals for 5 ticks
+  const stepSizeY = (roundedMax - roundedMin) / 4; 
 
-  // Format date for x-axis
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);
     return date.toLocaleDateString('en-GB', {
@@ -57,13 +87,12 @@ const ChartOne = ({mainstock}) => {
     });
   };
 
-  // Define chart data
   const chartData = {
-    labels: jsonData.map((item) => formatDate(item.t)), // Display dates
+    labels: jsonData.map((item) => formatDate(item.t)), 
     datasets: [
       {
         label: 'S&P 500',
-        data: jsonData.map((item) => item.c), // Use closing prices
+        data: jsonData.map((item) => item.c), 
         borderColor: (context) => {
           const ctx = context.chart.ctx;
           const gradient = ctx.createLinearGradient(0, 0, ctx.canvas.width, 0);
@@ -79,7 +108,6 @@ const ChartOne = ({mainstock}) => {
     ],
   };
 
-  // Define chart options
   const options = {
     responsive: true,
     maintainAspectRatio: false,
@@ -154,9 +182,9 @@ const ChartOne = ({mainstock}) => {
       <div className="flex flex-row justify-between -mt-4">
         <h1 className=" text-white text-md mb-6">{mainstock}</h1>
         <div className="flex space-x-4">
-        <button className="text-white text-xs bg-white bg-opacity-10 p-1 rounded h-1/2">1W</button>
-        <button className="text-white text-xs bg-white bg-opacity-10 p-1 rounded h-1/2">1M</button>
-        <button className="text-white text-xs bg-white bg-opacity-10 p-1 rounded h-1/2">1Y</button>
+        <button className="text-white text-xs bg-white bg-opacity-10 p-1 rounded h-1/2" onClick={()=>{set_start_date(weekAgoFormattedDate)}}>1W</button>
+        <button className="text-white text-xs bg-white bg-opacity-10 p-1 rounded h-1/2" onClick={()=>{set_start_date(monthAgoFormattedDate)}}>1M</button>
+        <button className="text-white text-xs bg-white bg-opacity-10 p-1 rounded h-1/2" onClick={()=>{set_start_date(yearAgoFormattedDate)}}>1Y</button>
         </div>
       </div>
       <Line data={chartData} options={options} />
