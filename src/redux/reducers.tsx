@@ -1,31 +1,29 @@
-// redux/reducers.ts
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { SET_SIGNUP_USERNAME, SET_SIGNUP_PASSWORD } from "./actions";
 
-// Define the state structure
-interface SignUpState {
+export interface SignupState {
   username: string;
   password: string;
 }
 
-const initialState: SignUpState = {
-  username: '',
-  password: '',
+interface Action {
+  type: string;
+  payload: any;
+}
+
+const initial_signup: SignupState = {
+  username: "",
+  password: "",
 };
 
-// Create the slice
-const signUpSlice = createSlice({
-  name: 'signUp',
-  initialState,
-  reducers: {
-    setSignUpUsername(state, action: PayloadAction<string>) {
-      state.username = action.payload;
-    },
-    setSignUpPassword(state, action: PayloadAction<string>) {
-      state.password = action.payload;
-    },
-  },
-});
+const signupReducer = (state = initial_signup, action: Action): SignupState => {
+  switch (action.type) {
+    case SET_SIGNUP_USERNAME:
+      return { ...state, username: action.payload };
+    case SET_SIGNUP_PASSWORD:
+      return { ...state, password: action.payload };
+    default:
+      return state;
+  }
+};
 
-// Export actions and reducer
-export const { setSignUpUsername, setSignUpPassword } = signUpSlice.actions;
-export const signUpReducer = signUpSlice.reducer;
+export default signupReducer;

@@ -1,15 +1,16 @@
-// redux/actions.ts
+export const SET_SIGNUP_USERNAME = "SET_SIGNUP_USERNAME";
+export const SET_SIGNUP_PASSWORD = "SET_SIGNUP_PASSWORD";
 
-// Action Types
-export const SET_SIGNUP_USERNAME = 'SET_SIGNUP_USERNAME';
+export const set_signup_username = (signup_username: string) => {
+  return {
+    type: SET_SIGNUP_USERNAME,
+    payload: signup_username,
+  };
+};
 
-// Action Creators
-export interface SetSignUpUsernameAction {
-  type: typeof SET_SIGNUP_USERNAME;
-  payload: string; // The payload will be the username.
-}
-
-export const set_signup_username = (username: string): SetSignUpUsernameAction => ({
-  type: SET_SIGNUP_USERNAME,
-  payload: username,
-});
+export const set_signup_password = (signup_password: string) => {
+  return {
+    type: SET_SIGNUP_PASSWORD,
+    payload: signup_password,
+  };
+};
