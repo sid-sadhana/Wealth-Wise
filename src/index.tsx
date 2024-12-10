@@ -2,8 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import Home from './pages/Home'
-// import SignUp from './pages/SignUp'
+import SignUp from './pages/SignUp'
 import SignIn from './pages/SignIn'
+import { Provider } from 'react-redux';
+import store from './redux/store';
 // import Dashboard from '../pages/Dashboard'
 // import Track from '../pages/Track'
 // import Holdings from '../pages/Holdings'
@@ -13,11 +15,12 @@ const rootElement = document.getElementById('root') as HTMLElement;
 
 const root = ReactDOM.createRoot(rootElement);
 root.render(
+    <Provider store={store}>
     <BrowserRouter>
         <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />
-            {/* <Route path="/signup" element={<SignUp />} /> */}
+            <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<SignIn />} />
             {/* <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/track" element={<Track />} />
@@ -25,4 +28,5 @@ root.render(
             <Route path="/settings" element={<Settings />} /> */}
         </Routes>
     </BrowserRouter>
+    </Provider>
 );
