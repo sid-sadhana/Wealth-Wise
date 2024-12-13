@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState ,useEffect} from 'react';
 import axios from 'axios';
 import Lottie from 'lottie-react';
 import title from '../assets/title.json'; 
@@ -12,13 +12,18 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import UsernamePassword from '../components/UsernamePassword'
+import {useDispatch,useSelector} from 'react-redux'
+import {RootState,AppDispatch} from '../redux/store'
 import FullDetails from '../components/FullDetails'
 
 const SignUp:React.FC = () => {
     const navigate = useNavigate();
 
-    const [progress_state,set_progress_state] = useState<number>(0);
-
+    const progress_from_store = useSelector((state: RootState) => state.progress);
+    const [expanded, setExpanded] = useState(false);
+      useEffect(() => {
+        setExpanded(true);
+      }, []);
     return (
         <div id="bg">
             <ToastContainer/>
@@ -50,10 +55,20 @@ const SignUp:React.FC = () => {
                         style={{ width: '100%', height: '100%' }} 
                     />
                 </div>
-
-                <div className="w-2/4 flex flex-col items-center justify-center mb-24">
-                    {progress_state <50 && <UsernamePassword/>}
-                    {progress_state >=50 && <FullDetails/>}
+                
+                <div className="w-2/4 flex flex-col items-center justify-center">
+                {progress_from_store>=50 && <div
+                    className={`bg-white mb-12 animate-pulse h-1 rounded-2xl transition-all duration-1000 ${
+                    expanded ? "w-full" : "w-1/2"
+                    }`}
+            ></div>}
+            {progress_from_store<50 && <div
+                    className={`bg-white mb-12 h-1 rounded-2xl transition-all animate-pulse duration-1000 ${
+                    expanded ? "w-1/2" : "w-1"
+                    }`}
+            ></div>}
+                    {progress_from_store <50 && <UsernamePassword/>}
+                    {progress_from_store >=50 && <FullDetails/>}
                 </div>
 
             </div>
