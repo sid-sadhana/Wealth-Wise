@@ -8,8 +8,6 @@ const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const cryptr = require("cryptr")
 
-
-
 mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log('connected'))
     .catch(err => console.error('connection error:', err));
@@ -43,22 +41,33 @@ app.get("/", (req, res) => {
 });
 
 app.post("/api/check-username", async (req, res) => {
-    const username = req.body.username;
+    const username=req.body.username
+    const password=req.body.password
+    console.log("ochindi ccheck uername ki")
 
+    if (password.length < 8 || password.length>30) return res.status(201).send("Invalid Password Length");
+    if (!/[a-z]/.test(password)) return res.status(201).send("Missing Lowercase Characters in Password");
+    if (!/[A-Z]/.test(password)) return res.status(201).send("Missing Uppercase Characters in Password");
+    if (!/\d/.test(password)) return res.status(201).send("Missing Numeric Characters in Password");
+    if (!/[-!@#$%^=+&*(),.?":{}<~\/\\\[\]]/.test(password)) return res.status(201).send("Missing Special Characters");
+    if (/\s/.test(password)) return res.status(201).send("Invalid Characters in Password");
+    if (!/^[a-zA-Z0-9!@#$%^&*(),.+-=?":{}<~\/\\\[\]]+$/.test(password)) {
+        return res.status(201).send("Invalid Characters in Password");
+    }
     const username_regex = /^[a-z0-9]*_?[a-z0-9]*$/;
 
     if (!username_regex.test(username)) {
-        return res.status(201).send("error_username_invalid");
+        return res.status(201).send("Invalid Username Pattern");
     }
     if (username.length < 4 || username.length > 30) {
-        return res.status(201).send("error_username_length");
+        return res.status(201).send("Invalid Username Length");
     }
     const user_find = await user_data.exists({ "username": username });
-    if (user_find === null) {
-        return res.send(false);  
-    } else {
-        return res.send(true);  
+    console.log(user_find)
+    if (user_find !== null){
+        return res.status(201).json("Username already exists");  
     }
+    return res.sendStatus(200)
 });
 
 app.post("/api/check-password", async (req, res) => {
