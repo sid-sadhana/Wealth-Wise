@@ -63,7 +63,6 @@ app.post("/api/check-username", async (req, res) => {
         return res.status(201).send("Invalid Username Length");
     }
     const user_find = await user_data.exists({ "username": username });
-    console.log(user_find)
     if (user_find !== null){
         return res.status(201).json("Username already exists");  
     }
@@ -122,6 +121,7 @@ app.get("/api/get-verify-token", (req, res) => {
 });
 
 app.post("/api/signup",async(req,res)=>{
+    //console.log(req.body.username)
     const user_find = await user_data.exists({ "username": req.body.username });
     if(user_find!=null){
         res.status(201).send("Username Already Exists!")
@@ -132,7 +132,7 @@ app.post("/api/signup",async(req,res)=>{
             username: req.body.username,
             password: hash,
             role: "user",
-            full_name:req.body.first_name+" "+req.body.last_name,
+            full_name:req.body.full_name,
             investments: []
           });
         await make_user.save()
