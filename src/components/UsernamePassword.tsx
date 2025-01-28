@@ -2,8 +2,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect} from 'react';
 import { RootState, AppDispatch } from '../redux/store';
 import { set_signup_username ,set_signup_password,set_signup_progress} from '../redux/actions';
+import axios from 'axios'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const UsernamePassword: React.FC = () => {
+  
   const [username, set_username] = useState<string>('');
   const [pass, set_pass] = useState<string>('');
   const [confirm_pass, set_confirm_pass] = useState<string>('');
@@ -14,10 +18,95 @@ const UsernamePassword: React.FC = () => {
   const progress_from_store = useSelector((state: RootState) => state.progress);
 
   const dispatch = useDispatch<AppDispatch>();
+  useEffect(() => {
+    set_username(username_from_store)
+  }, []);
 
-  const handle1=()=>{
-    dispatch(set_signup_username(username));
-    dispatch(set_signup_progress(50));
+  function validateUserInput(username:string, password:string):string {
+    const usernameRegex = /^[a-z0-9]*_?[a-z0-9]*$/;
+
+    // Validate username pattern
+    if (!usernameRegex.test(username)) {
+        return "Invalid Username Pattern";
+    }
+
+    // Validate username length
+    if (username.length < 4 || username.length > 30) {
+        return "Invalid Username Length";
+    }
+
+    // Validate password length
+    if (password.length < 8 || password.length > 30) {
+        return "Invalid Password Length";
+    }
+
+    // Validate presence of lowercase characters
+    if (!/[a-z]/.test(password)) {
+        return "Missing Lowercase Characters in Password";
+    }
+
+    // Validate presence of uppercase characters
+    if (!/[A-Z]/.test(password)) {
+        return "Missing Uppercase Characters in Password";
+    }
+
+    // Validate presence of numeric characters
+    if (!/\d/.test(password)) {
+        return "Missing Numeric Characters in Password";
+    }
+
+    // Validate presence of special characters
+    if (!/[-!@#$%^=+&*(),.?":{}<~\/\\\[\]]/.test(password)) {
+        return "Missing Special Characters";
+    }
+
+    // Validate no whitespace in password
+    if (/\s/.test(password)) {
+        return "Invalid Characters in Password";
+    }
+
+    // Validate no invalid characters in password
+    if (!/^[a-zA-Z0-9!@#$%^&*(),.+-=?":{}<~\/\\\[\]]+$/.test(password)) {
+        return "Invalid Characters in Password";
+    }
+
+    return "Valid"; // Input is valid
+}
+
+  const handle1=async()=>{
+    const result = validateUserInput(username, pass);
+    if (result !== "Valid") {
+      toast.error(result,{
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
+  }
+    else if (result==="Valid"){
+    const response = await axios.post("http://localhost:5500/api/check-username",{username:username,password:pass})
+    console.log(response)
+    if(response.status===200){
+      dispatch(set_signup_username(username));
+      dispatch(set_signup_progress(50));
+    }
+    else if(response.status===201){
+      toast.error(response.data,{
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        });
+    }
+  }
   }
   const [expanded, setExpanded] = useState(false);
 
@@ -28,6 +117,7 @@ const UsernamePassword: React.FC = () => {
 
   return (
     <div className="w-full space-y-4">
+      <ToastContainer />
       <input
         type="text"
         placeholder="Username"

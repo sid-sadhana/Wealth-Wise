@@ -6,6 +6,7 @@ import SignUp from './pages/SignUp'
 import SignIn from './pages/SignIn'
 import { Provider } from 'react-redux';
 import store from './redux/store';
+
 // import Dashboard from '../pages/Dashboard'
 // import Track from '../pages/Track'
 // import Holdings from '../pages/Holdings'

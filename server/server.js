@@ -1,4 +1,6 @@
 const { dotenv, express, cors, argon2, mongoose, jwt, cookieParser, cryptr } = require('./utils/requirements');
+const userRoutes = require('./controllers/UserRoutes');
+
 dotenv.config();
 mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log('connected'))
@@ -13,7 +15,7 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
     exposedHeaders: ['Set-Cookie']
 }));
-
+app.use('/', userRoutes);
 app.use(express.json());
 app.use(cookieParser()); 
 const PORT = 5500;
