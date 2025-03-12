@@ -88,7 +88,7 @@ const UsernamePassword: React.FC = () => {
         });
   }
     else if (result==="Valid"){
-    const response = await axios.post("http://localhost:5500/api/jwtauth/check-username",{username:username,password:pass})
+    const response = await axios.post("http://localhost:5500/api/jwtauth/checkcred",{username:username,password:pass})
     console.log(response)
     if(response.status===200){
       dispatch(set_signup_username(username));
