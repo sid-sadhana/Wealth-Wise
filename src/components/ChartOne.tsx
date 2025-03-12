@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
+import {ChartOptions, ChartData } from 'chart.js';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -13,9 +14,16 @@ import {
 } from 'chart.js';
 
 ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend);
+interface ChartOneProps {
+  mainstock: string;
+}
+interface JsonDataItem {
+  t: string;
+  c: number; 
+}
 
-const ChartOne = ({mainstock}) => {
-  const [jsonData, setJsonData] = useState([]);
+const ChartOne:React.FC<ChartOneProps> = ({mainstock}) => {
+  const [jsonData, setJsonData] = useState<JsonDataItem[]>([]);
 
   const date = new Date();
   const yyyy = date.getFullYear();
@@ -79,7 +87,7 @@ const [start_date,set_start_date]=useState(weekAgoFormattedDate)
 
   const stepSizeY = (roundedMax - roundedMin) / 4; 
 
-  const formatDate = (timestamp) => {
+  const formatDate = (timestamp:string) => {
     const date = new Date(timestamp);
     return date.toLocaleDateString('en-GB', {
       day: 'numeric',
@@ -93,7 +101,7 @@ const [start_date,set_start_date]=useState(weekAgoFormattedDate)
       {
         label: 'S&P 500',
         data: jsonData.map((item) => item.c), 
-        borderColor: (context) => {
+        borderColor: (context:any) => {
           const ctx = context.chart.ctx;
           const gradient = ctx.createLinearGradient(0, 0, ctx.canvas.width, 0);
           gradient.addColorStop(0, 'rgba(75, 192, 192, 1)');
@@ -108,7 +116,7 @@ const [start_date,set_start_date]=useState(weekAgoFormattedDate)
     ],
   };
 
-  const options = {
+  const options:any= {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -122,10 +130,10 @@ const [start_date,set_start_date]=useState(weekAgoFormattedDate)
         displayColors: false,
         intersect: false,
         callbacks: {
-          title: (tooltipItems) => {
+          title: (tooltipItems:any) => {
             return formatDate(jsonData[tooltipItems[0].dataIndex].t);
           },
-          label: (tooltipItem) => {
+          label: (tooltipItem:any) => {
             return `Price: $${tooltipItem.raw.toFixed(2)}`;
           },
         },
@@ -160,7 +168,7 @@ const [start_date,set_start_date]=useState(weekAgoFormattedDate)
         },
         ticks: {
           color: "rgba(255, 255, 255, 0.7)",
-          callback: (value) => `$${value}`,
+          callback: (value:any) => `$${value}`,
           padding: 0,
           stepSize: Math.ceil(stepSizeY), // Use stepSizeY to make sure we have 5 ticks
           maxTicksLimit: 5, // Limit to 5 ticks only
