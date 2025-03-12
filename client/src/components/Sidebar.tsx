@@ -19,7 +19,7 @@ const navigate = useNavigate()
 const [username,set_username]=useState("")
 useEffect(()=>{
     const verifytoken=async()=>{
-    const response = await axios.get("http://localhost:5500/api/get-verify-token")
+    const response = await axios.get("http://localhost:5500/api/jwtauth/getvtk")
     if(response.status!==200){
         navigate("/signin")
     }

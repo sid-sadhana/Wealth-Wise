@@ -31,7 +31,7 @@ const ChartOne:React.FC<ChartOneProps> = ({mainstock}) => {
   const dd = String(date.getDate()).padStart(2, '0');
   
   const formattedDate = `${yyyy}-${mm}-${dd}`;
-  console.log(formattedDate);
+  // console.log(formattedDate);
 const currentDate = new Date(formattedDate);
 currentDate.setDate(currentDate.getDate() - 7);
 const weekAgoYyyy = currentDate.getFullYear();
@@ -40,7 +40,7 @@ const weekAgoDd = String(currentDate.getDate()).padStart(2, '0');
 const weekAgoFormattedDate = `${weekAgoYyyy}-${weekAgoMm}-${weekAgoDd}`;
 
 //week agoooooo
-console.log(weekAgoFormattedDate);
+// console.log(weekAgoFormattedDate);
 currentDate.setMonth(currentDate.getMonth() - 1);
 
 const monthAgoYyyy = currentDate.getFullYear();
@@ -49,7 +49,7 @@ const monthAgoDd = String(currentDate.getDate()).padStart(2, '0');
 const monthAgoFormattedDate = `${monthAgoYyyy}-${monthAgoMm}-${monthAgoDd}`;
 
 //month agooooooo
-console.log(monthAgoFormattedDate);
+// console.log(monthAgoFormattedDate);
 
 
 const yearAgoYyyy = currentDate.getFullYear()-1;
@@ -58,14 +58,15 @@ const yearAgoDd = String(currentDate.getDate()).padStart(2, '0');
 const yearAgoFormattedDate = `${yearAgoYyyy}-${yearAgoMm}-${yearAgoDd}`;
 
 //year agoooooooo
-console.log(yearAgoFormattedDate);
-
+// console.log(yearAgoFormattedDate);
 const [start_date,set_start_date]=useState(weekAgoFormattedDate)
+console.log(start_date+" "+formattedDate)
   useEffect(() => {
     const getChart1 = async () => {
       try {
+        console.log(mainstock)
         const response = await axios.get(
-          "https://api.polygon.io/v2/aggs/ticker/SPY/range/1/day/"+start_date+"/"+formattedDate+"?sort=asc&apiKey=oQ2SyGnp9cYRj0BQKrMHFLdplkp9kCtH"
+          `https://api.polygon.io/v2/aggs/ticker/${mainstock}/range/1/day/`+start_date+`/`+formattedDate+`?sort=asc&apiKey=oQ2SyGnp9cYRj0BQKrMHFLdplkp9kCtH`
         );
         setJsonData(response.data.results);
       } catch (error) {

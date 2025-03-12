@@ -101,3 +101,27 @@ export const checkcred = async (req, res) => {
 
     return res.sendStatus(200);
 };
+
+export const getverifytoken = (req, res) => {
+    const token = req.cookies.token;
+
+    if (!token) {
+        return res.status(201).json({ message: "No token found" });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET); // Verifies and decodes
+        console.log(decoded);
+        return res.status(200).json({ token: decoded });
+    } catch (error) {
+        console.error("Token verification error:", error);
+
+        if (error.name === "JsonWebTokenError") {
+            return res.status(401).json({ message: "Invalid token" });
+        } else if (error.name === "TokenExpiredError") {
+            return res.status(403).json({ message: "Token expired" });
+        } else {
+            return res.status(500).json({ message: "Internal server error" });
+        }
+    }
+};
