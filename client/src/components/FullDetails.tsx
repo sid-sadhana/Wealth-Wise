@@ -21,6 +21,7 @@ const FullDetails:React.FC=()=>{
             full_name: fn+" "+ln,
             investments: [],
         })
+        console.log("password is "+password_from_store)
         if(response.status===200){
             toast.success(response.data,{
                     position: "top-right",

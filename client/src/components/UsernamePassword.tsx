@@ -15,11 +15,13 @@ const UsernamePassword: React.FC = () => {
   const [confirm_eye, set_confirm_eye] = useState<boolean>(true);
 
   const username_from_store = useSelector((state: RootState) => state.username);
+  const password_from_store=useSelector((state: RootState) => state.password);
   const progress_from_store = useSelector((state: RootState) => state.progress);
 
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     set_username(username_from_store)
+    set_pass(password_from_store)
   }, []);
 
   function validateUserInput(username:string, password:string):string {
@@ -92,6 +94,7 @@ const UsernamePassword: React.FC = () => {
     console.log(response)
     if(response.status===200){
       dispatch(set_signup_username(username));
+      dispatch(set_signup_password(pass));
       dispatch(set_signup_progress(50));
     }
     else if(response.status===201){

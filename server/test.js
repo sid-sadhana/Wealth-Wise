@@ -10,7 +10,7 @@ const hashPassword = async (password) => {
         console.log("Hashed Password:", hashedPassword);
 
         // Simulate password comparison
-        await comparePassword(password, "$2b$10$9CSA5aog8YVXoVcL.6XN7eKrXBACpjjgAER2JHVwZ9Yw9h884Ysc.");
+        await comparePassword(password, hashedPassword);
     } catch (error) {
         console.error("Error hashing password:", error);
     }

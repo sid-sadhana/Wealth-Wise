@@ -1,17 +1,27 @@
+const hashPassword = async (password) => {
+    try {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        console.log("Hashed Password:", hashedPassword);
+        return hashedPassword;
+    } catch (error) {
+        console.error("Error hashing password:", error);
+        throw error; 
+    }
+};
+
 import { user_data } from "../utils/mongo.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 export const signup = async (req, res) => {
     try {
+        console.log(req.body)
         const user_find = await user_data.exists({ "username": req.body.username });
         if (user_find) {
             return res.status(201).send("Username Already Exists!");
         }
 
-        const saltRounds = 10; 
-        const hash= await bcrypt.hash(req.body.password.trim(), saltRounds);
-        console.log(hash)
+        const hash = await hashPassword(req.body.password.trim());
         const make_user = new user_data({
             username: req.body.username,
             password: hash,
@@ -36,7 +46,7 @@ export const signin = async (req, res) => {
             return res.status(401).json({ message: "Login failed" });
         }
         const isMatch = await bcrypt.compare(req.body.password.trim(), user_find.password);
-        console.log("*"+user_find.password+"*");
+        console.log(isMatch);
         if (isMatch) {
             const token = jwt.sign(
                 { username: req.body.username },
@@ -66,7 +76,6 @@ export const checkcred = async (req, res) => {
     const { username, password } = req.body;
     console.log("ochindi ccheck uername ki");
 
-    // Password validation
     if (password.length < 8 || password.length > 30) return res.status(400).send("Invalid Password Length");
     if (!/[a-z]/.test(password)) return res.status(400).send("Missing Lowercase Characters in Password");
     if (!/[A-Z]/.test(password)) return res.status(400).send("Missing Uppercase Characters in Password");
@@ -77,7 +86,6 @@ export const checkcred = async (req, res) => {
         return res.status(400).send("Invalid Characters in Password");
     }
 
-    // Username validation
     const username_regex = /^[a-z0-9]*_?[a-z0-9]*$/;
     if (!username_regex.test(username)) {
         return res.status(400).send("Invalid Username Pattern");
@@ -86,7 +94,6 @@ export const checkcred = async (req, res) => {
         return res.status(400).send("Invalid Username Length");
     }
 
-    // Check if username exists
     const user_find = await user_data.exists({ username });
     if (user_find) {
         return res.status(400).json("Username already exists");
