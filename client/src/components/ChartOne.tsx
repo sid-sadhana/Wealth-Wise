@@ -116,9 +116,18 @@ console.log(start_date+" "+formattedDate)
       },
     ],
   };
+  
 
   const options:any= {
     responsive: true,
+    animations: {
+        duration: 1000,
+        easing: 'easeInQuint',
+        from: 1,
+        to: 0,
+        loop: true
+      
+    },
     maintainAspectRatio: false,
     plugins: {
       legend: {
