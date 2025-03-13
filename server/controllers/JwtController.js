@@ -1,12 +1,10 @@
 import { user_data } from "../utils/mongo.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { getJson } from "serpapi";
 
 const hashPassword = async (password) => {
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
-        console.log("Hashed Password:", hashedPassword);
         return hashedPassword;
     } catch (error) {
         console.error("Error hashing password:", error);
@@ -17,7 +15,6 @@ const hashPassword = async (password) => {
 
 export const signup = async (req, res) => {
     try {
-        console.log(req.body)
         const user_find = await user_data.exists({ "username": req.body.username });
         if (user_find) {
             return res.status(201).send("Username Already Exists!");
@@ -48,7 +45,6 @@ export const signin = async (req, res) => {
             return res.status(401).json({ message: "Login failed" });
         }
         const isMatch = await bcrypt.compare(req.body.password.trim(), user_find.password);
-        console.log(isMatch);
         if (isMatch) {
             const token = jwt.sign(
                 { username: req.body.username },
@@ -76,7 +72,6 @@ export const signin = async (req, res) => {
 
 export const checkcred = async (req, res) => {
     const { username, password } = req.body;
-    console.log("ochindi ccheck uername ki");
 
     if (password.length < 8 || password.length > 30) return res.status(400).send("Invalid Password Length");
     if (!/[a-z]/.test(password)) return res.status(400).send("Missing Lowercase Characters in Password");
@@ -113,7 +108,6 @@ export const getverifytoken = (req, res) => {
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET); 
-        console.log(decoded);
         return res.status(200).json({ token: decoded });
     } catch (error) {
         console.error("Token verification error:", error);
@@ -128,29 +122,6 @@ export const getverifytoken = (req, res) => {
     }
 };
 
-export const getnews = async (req, res) => {
-    try {
-        const news = await new Promise((resolve, reject) => {
-            getJson({
-                api_key: process.env.SERP_API,
-                engine: "google",
-                q: "stock market news",
-                location: "United States",
-                google_domain: "google.com",
-                gl: "us",
-                hl: "en"
-            }, (json) => {
-                if (json) resolve(json);
-                else reject("No news data found.");
-            });
-        });
-
-        return res.status(200).json({ message: news });
-    } catch (error) {
-        console.error("Error fetching news:", error);
-        return res.status(500).json({ error: "Failed to fetch news" });
-    }
-};
 
 export const clear=(req,res)=>{
     res.clearCookie("token", { path: "/" });

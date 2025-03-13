@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import {useSelector} from 'react-redux'
 import { Line } from 'react-chartjs-2';
+import {RootState,AppDispatch} from '../redux/store'
 import {ChartOptions, ChartData } from 'chart.js';
 import {
   Chart as ChartJS,
@@ -14,17 +16,16 @@ import {
 } from 'chart.js';
 
 ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend);
-interface ChartOneProps {
-  mainstock: string;
-}
+
 interface JsonDataItem {
-  t: string;
-  c: number; 
+  t?: any;
+  c?: any; 
 }
 
-const ChartOne:React.FC<ChartOneProps> = ({mainstock}) => {
+const ChartOne= () => {
+  const [username,set_username]=useState("")
   const [jsonData, setJsonData] = useState<JsonDataItem[]>([]);
-
+  const [mainstock,set_mainstock]=useState<string>("")
   const date = new Date();
   const yyyy = date.getFullYear();
   const mm = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
@@ -60,15 +61,24 @@ const yearAgoFormattedDate = `${yearAgoYyyy}-${yearAgoMm}-${yearAgoDd}`;
 //year agoooooooo
 // console.log(yearAgoFormattedDate);
 const [start_date,set_start_date]=useState(weekAgoFormattedDate)
-console.log(start_date+" "+formattedDate)
+//console.log(start_date+" "+formattedDate)
   useEffect(() => {
     const getChart1 = async () => {
       try {
-        console.log(mainstock)
+        
+        const respons = await axios.get("http://localhost:5500/api/jwtauth/getvtk")
+if(respons.status===200){
+        console.log("username is: "+respons.data.token.username);
+    }
+        const response2 = await axios.post("http://localhost:5500/api/activity/mainstock",{username:respons.data.token.username});
+        console.log(response2.data.message)
+        set_mainstock(response2.data.message)
         const response = await axios.get(
-          `https://api.polygon.io/v2/aggs/ticker/${mainstock}/range/1/day/`+start_date+`/`+formattedDate+`?sort=asc&apiKey=oQ2SyGnp9cYRj0BQKrMHFLdplkp9kCtH`
+          `https://api.polygon.io/v2/aggs/ticker/${response2.data.message}/range/1/day/`+start_date+`/`+formattedDate+`?sort=asc&apiKey=${process.env.REACT_APP_POLYGON_API}`
         );
         setJsonData(response.data.results);
+        console.log(response.status)
+        console.log(response.data.results)
       } catch (error) {
         console.error("Error fetching data", error);
       }
@@ -77,9 +87,6 @@ console.log(start_date+" "+formattedDate)
     getChart1();
   }, []);
 
-  if (jsonData.length === 0) {
-    return <div>Loading chart...</div>;
-  }
   const maxPrice = Math.max(...jsonData.map((item) => item.c));
   const minPrice = Math.min(...jsonData.map((item) => item.c));
 

@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 
 import jwtRoute from "./routes/JwtAuth.js";
+import activityRoute from "./routes/Activity.js"
 
 dotenv.config();
 
@@ -37,6 +38,7 @@ app.use(cookieParser())
 app.use(express.json());
 
 app.use("/api/jwtauth", jwtRoute);
+app.use("/api/activity", activityRoute);
 
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;

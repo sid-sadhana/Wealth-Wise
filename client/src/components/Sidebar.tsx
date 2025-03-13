@@ -11,6 +11,7 @@ import { ReactComponent as Home } from "../assets/home.svg"
 import { ReactComponent as Holding } from "../assets/holding.svg"
 import { ReactComponent as Setting } from "../assets/setting.svg"
 import Nav from "./Nav"
+
 interface Children{
     children:any
 }
@@ -22,10 +23,6 @@ useEffect(()=>{
     const response = await axios.get("http://localhost:5500/api/jwtauth/getvtk")
     if(response.status!==200){
         navigate("/signin")
-    }
-    else if(response.status===200){
-        //console.log(response.data.token.username);
-        set_username(response.data.token.username)
     }
     }
     verifytoken()

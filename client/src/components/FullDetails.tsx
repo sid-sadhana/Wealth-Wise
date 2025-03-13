@@ -2,7 +2,9 @@ import {useState,useEffect} from 'react'
 import {useDispatch,useSelector} from 'react-redux'
 import { ToastContainer, toast } from 'react-toastify';
 import {RootState,AppDispatch} from '../redux/store'
-import {set_signup_progress} from '../redux/actions'
+import {
+    SET_SIGNUP_PROGRESS
+  } from '../redux/actions';
 import {useNavigate} from 'react-router-dom'
 import axios from 'axios'
 const FullDetails:React.FC=()=>{
@@ -11,8 +13,8 @@ const FullDetails:React.FC=()=>{
     const [fn,set_fn] = useState<string>("");
     const [ln,set_ln] = useState<string>("");
     //const progress_from_store = useSelector((state: RootState) => state.progress);
-    const username_from_store=useSelector((state: RootState) => state.username);
-    const password_from_store=useSelector((state: RootState) => state.password);
+    const username_from_store=useSelector((state: RootState) => state.signup.username);
+    const password_from_store=useSelector((state: RootState) => state.signup.password);
     const register_user=async()=>{
         const response = await axios.post("http://localhost:5500/api/jwtauth/signup",{
             username: username_from_store,
@@ -67,7 +69,7 @@ const FullDetails:React.FC=()=>{
                     className="w-full outline-none text-white text-center border-none rounded-2xl transition-all duration-300 bg-white bg-opacity-[3%] p-2 focus:bg-white focus:bg-opacity-5 focus:drop-shadow-2xl focus:shadow-2xl drop-shadow shadow placeholder:text-gray-300 ease-in-out"
                 />
                 <div className="w-full space-x-2 flex flex-row">
-                <button className="w-1/2 bg-black text-white p-2 mt-8 rounded-2xl bg-opacity-50 transition-all duration-300 ease-in-out hover:bg-opacity-60 active:scale-95" onClick={()=>dispatch(set_signup_progress(0))}>Previous</button>
+                <button className="w-1/2 bg-black text-white p-2 mt-8 rounded-2xl bg-opacity-50 transition-all duration-300 ease-in-out hover:bg-opacity-60 active:scale-95" onClick={()=>dispatch(SET_SIGNUP_PROGRESS(0))}>Previous</button>
                 <button onClick={register_user} className="w-1/2 bg-black text-white p-2 mt-8 rounded-2xl bg-opacity-50 hover:bg-opacity-60 transition-all duration-300 ease-in-out active:scale-95">Finish</button>
                 </div>
             </div>

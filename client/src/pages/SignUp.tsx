@@ -19,7 +19,7 @@ import FullDetails from '../components/FullDetails'
 const SignUp:React.FC = () => {
     const navigate = useNavigate();
 
-    const progress_from_store = useSelector((state: RootState) => state.progress);
+    const progress_from_store = useSelector((state: RootState) => state.signup.progress);
     const [expanded, setExpanded] = useState(false);
       useEffect(() => {
         setExpanded(true);

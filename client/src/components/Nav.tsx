@@ -3,15 +3,17 @@ import "../index.css"
 import axios from "axios"
 import { ReactComponent as Bell } from "../assets/bell.svg"
 import { generateFromString } from 'generate-avatar'
+import {useNavigate} from 'react-router-dom'
+
 interface Username{
     username:string
 }
 const Nav:React.FC<Username>=({username})=>{
+    const navigate = useNavigate()
     const handleLogout = async () => {
-        console.log("po ra")
         try {
             const response = await axios.get("http://localhost:5500/api/jwtauth/clear")
-            console.log("response is " +response.data)
+            navigate("/signin")
         } catch (error) {
             console.error("Logout failed: ", error);
         }

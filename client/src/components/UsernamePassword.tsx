@@ -1,7 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect} from 'react';
 import { RootState, AppDispatch } from '../redux/store';
-import { set_signup_username ,set_signup_password,set_signup_progress} from '../redux/actions';
+import {
+  SET_SIGNUP_USERNAME,
+  SET_SIGNUP_PASSWORD,
+  SET_SIGNUP_PROGRESS,
+  SET_UNI_USERNAME
+} from '../redux/actions';
 import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -14,9 +19,9 @@ const UsernamePassword: React.FC = () => {
   const [pass_eye, set_pass_eye] = useState<boolean>(true);
   const [confirm_eye, set_confirm_eye] = useState<boolean>(true);
 
-  const username_from_store = useSelector((state: RootState) => state.username);
-  const password_from_store=useSelector((state: RootState) => state.password);
-  const progress_from_store = useSelector((state: RootState) => state.progress);
+  const username_from_store = useSelector((state: RootState) => state.signup.username);
+  const password_from_store=useSelector((state: RootState) => state.signup.password);
+  const progress_from_store = useSelector((state: RootState) => state.signup.progress);
 
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
@@ -93,9 +98,9 @@ const UsernamePassword: React.FC = () => {
     const response = await axios.post("http://localhost:5500/api/jwtauth/checkcred",{username:username,password:pass})
     console.log(response)
     if(response.status===200){
-      dispatch(set_signup_username(username));
-      dispatch(set_signup_password(pass));
-      dispatch(set_signup_progress(50));
+      dispatch(SET_SIGNUP_USERNAME(username));
+      dispatch(SET_SIGNUP_PASSWORD(pass));
+      dispatch(SET_SIGNUP_PROGRESS(50));
     }
     else if(response.status===201){
       toast.error(response.data,{
