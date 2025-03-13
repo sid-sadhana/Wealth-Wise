@@ -1,3 +1,8 @@
+import { user_data } from "../utils/mongo.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { getJson } from "serpapi";
+
 const hashPassword = async (password) => {
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -9,9 +14,6 @@ const hashPassword = async (password) => {
     }
 };
 
-import { user_data } from "../utils/mongo.js";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 
 export const signup = async (req, res) => {
     try {
@@ -110,7 +112,7 @@ export const getverifytoken = (req, res) => {
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET); // Verifies and decodes
+        const decoded = jwt.verify(token, process.env.JWT_SECRET); 
         console.log(decoded);
         return res.status(200).json({ token: decoded });
     } catch (error) {
@@ -125,3 +127,32 @@ export const getverifytoken = (req, res) => {
         }
     }
 };
+
+export const getnews = async (req, res) => {
+    try {
+        const news = await new Promise((resolve, reject) => {
+            getJson({
+                api_key: process.env.SERP_API,
+                engine: "google",
+                q: "stock market news",
+                location: "United States",
+                google_domain: "google.com",
+                gl: "us",
+                hl: "en"
+            }, (json) => {
+                if (json) resolve(json);
+                else reject("No news data found.");
+            });
+        });
+
+        return res.status(200).json({ message: news });
+    } catch (error) {
+        console.error("Error fetching news:", error);
+        return res.status(500).json({ error: "Failed to fetch news" });
+    }
+};
+
+export const clear=(req,res)=>{
+    res.clearCookie("token", { path: "/" });
+    res.status(200).json({ message: "Logged out successfully" });
+}
