@@ -43,7 +43,7 @@ const Dashboard = () => {
           </div>
           <div
             ref={scrollContainerRef}
-            className="overflow-y-auto flex flex-col items-center space-y-4 drop-shadow-none w-4/12 h-3/6 pr-4 pl-4 pt-6 pb-8 rounded-xl border-opacity-10 transition-all duration-1000 shadow-transparent hover:shadow-gray-800 hover-drop-shadow-2xl shadow-md"
+            className="scrollbar overflow-y-auto flex flex-col items-center space-y-4 drop-shadow-none w-4/12 h-3/6 pr-4 pl-4 pt-6 pb-8 rounded-xl border-opacity-10 transition-all duration-1000 shadow-transparent shadow-md"
           >
             {news.map((price: any, index) => (
               <Link
