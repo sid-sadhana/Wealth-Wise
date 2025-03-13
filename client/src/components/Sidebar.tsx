@@ -11,18 +11,28 @@ import { ReactComponent as Home } from "../assets/home.svg"
 import { ReactComponent as Holding } from "../assets/holding.svg"
 import { ReactComponent as Setting } from "../assets/setting.svg"
 import Nav from "./Nav"
+import {useDispatch,useSelector} from 'react-redux'
+import {
+    SET_UNI_USERNAME
+} from '../redux/actions';
 
 interface Children{
     children:any
 }
 const Sidebar:React.FC<Children>=({children})=>{
 const navigate = useNavigate()
+const dispatch = useDispatch()
 const [username,set_username]=useState("")
 useEffect(()=>{
     const verifytoken=async()=>{
     const response = await axios.get("http://localhost:5500/api/jwtauth/getvtk")
     if(response.status!==200){
         navigate("/signin")
+    }
+    else if(response.status===200){
+        //console.log(response.data.token.username);
+        set_username(response.data.token.username)
+        dispatch(SET_UNI_USERNAME(response.data.token.username))
     }
     }
     verifytoken()
