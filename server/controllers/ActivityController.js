@@ -35,3 +35,33 @@ export const mainstock = async (req, res) => {
         console.log(e);
     }
 };
+
+export const upload_data = async (req, res) => {
+    try {
+        console.log(req.body.username)
+        const updatedStock = await user_data.findOneAndUpdate(
+            { "username": req.body.username },      // Search condition
+            { $set: { investments: req.body.investments } }             // Return updated document and create if not exists
+        );
+        return res.status(200).json({ message: "done"});
+    } catch (e) {
+        console.error(e);
+        return res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+export const get_data = async (req, res) => {
+    try {
+
+        const userStockData = await user_data.findOne({ "username": req.body.username});
+
+        if (!userStockData) {
+            return res.status(404).json({ error: "User data not found" });
+        }
+
+        return res.status(200).json({ investments: userStockData.investments });
+    } catch (e) {
+        console.error(e);
+        return res.status(500).json({ error: "Internal server error" });
+    }
+};

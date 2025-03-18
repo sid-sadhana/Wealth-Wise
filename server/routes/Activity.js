@@ -1,9 +1,13 @@
 import express from 'express';
-import {getnews,mainstock} from "../controllers/ActivityController.js";
+import {getnews,mainstock,upload_data,get_data} from "../controllers/ActivityController.js";
 const router = express.Router();
 
 router.get("/getnews", getnews)
 
 router.post("/mainstock", mainstock)
+
+router.post("/upload-data", upload_data)
+
+router.post("/get-data", get_data)
 
 export default router
