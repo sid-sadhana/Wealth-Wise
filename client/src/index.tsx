@@ -8,8 +8,8 @@ import { Provider } from 'react-redux';
 import store from './redux/store';
 
 import Dashboard from './pages/Dashboard'
-// import Track from '../pages/Track'
-// import Holdings from '../pages/Holdings'
+import Track from './pages/Track'
+import Holdings from './pages/Holdings'
 import Settings from './pages/Settings'
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 const rootElement = document.getElementById('root') as HTMLElement;
@@ -24,8 +24,8 @@ root.render(
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            {/* <Route path="/track" element={<Track />} />
-            <Route path="/holdings" element={<Holdings />} /> */}
+            <Route path="/track" element={<Track />} />
+            <Route path="/holdings" element={<Holdings />} />
             <Route path="/settings" element={<Settings />} />
         </Routes>
     </BrowserRouter>
