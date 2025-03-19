@@ -65,3 +65,42 @@ export const get_data = async (req, res) => {
         return res.status(500).json({ error: "Internal server error" });
     }
 };
+
+export const edit_account = async (req, res) => {
+    console.log(req.body)
+    const { username, action, newName } = req.body;
+
+    try {
+        const user = await user_data.findOne({ username });
+
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        if (action === 'change_name') {
+            if (!newName) {
+                return res.status(400).json({ error: "New name is required to change name." });
+            }
+            user.full_name = newName;
+            await user.save();
+            return res.status(200).json({ message: "Name updated successfully." });
+        }
+
+        if (action === 'delete_data') {
+            user.investments = [];
+            await user.save();
+            return res.status(200).json({ message: "All data deleted successfully." });
+        }
+
+        if (action === 'delete_account') {
+            await user_data.deleteOne({ username });
+            return res.status(200).json({ message: "Account deleted successfully." });
+        }
+
+        return res.status(400).json({ error: "Invalid action specified." });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Internal server error." });
+    }
+};
