@@ -3,29 +3,30 @@ from flask_cors import CORS
 from pypdf import PdfReader
 import google.generativeai as genai
 import re
+import json
+import os
+from dotenv import load_dotenv
 
-# Initialize Flask app
 app = Flask(__name__)
 CORS(app, resources={r"/extract": {"origins": "http://localhost:3000"}}, supports_credentials=True)
+load_dotenv()
 
-# Initialize Gemini API
-genai.configure(api_key="AIzaSyCtIlNUVhbM_NO9ou9b-Zav8Dmjx19o3MU")
+# Retrieve the API key from environment variables
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+genai.configure(api_key=GOOGLE_API_KEY)
 
-# Function to extract text from PDF
-def extract_text_from_pdf(pdf_path):
-    reader = PdfReader(pdf_path)
+def extract_text_from_pdf(file):
+    reader = PdfReader(file)
     extracted_text = ""
     for page in reader.pages:
         extracted_text += page.extract_text() or ""
     return extracted_text
 
-# Function to query Gemini API
 def query_gemini(text, query):
-    model = genai.GenerativeModel("gemini-1.5-pro")
+    model = genai.GenerativeModel("gemini-2.0-flash")
     response = model.generate_content(f"{query}\n\n{text}")
     return response.text
 
-# Flask route for PDF upload and extraction
 @app.route('/extract', methods=['POST'])
 def extract():
     if 'pdf' not in request.files:
@@ -37,20 +38,17 @@ def extract():
 
     pdf_text = extract_text_from_pdf(pdf_file)
 
-    user_query = """Extract structured stock data from the given source and return it in valid JSON format.
-    Identify stock symbols and include the following fields for each entry:
-    - 'symbol' (stock ticker symbol),
-    - 'security' (full company/security name),
-    - 'market_value' (put null for all),
-    - 'current_balance' (stock quantity),
-    - 'value' (put null for all),
-    - 'average_price' (average buying price of all stocks - put null if this field is not present).
-
-    Ensure the JSON output is properly formatted, concise, and handles missing values with 'null'. Return only the JSON and no additional text."""
-
+    user_query = """Extract all stock symbols from the text and return a JSON list. Example: ["AAPL", "MSFT", "TSLA"]"""
     result = query_gemini(pdf_text, user_query)
 
-    return jsonify({"data": result})
+    try:
+        # Attempt to extract list safely
+        stock_list = json.loads(re.search(r'\[.*\]', result, re.DOTALL).group())
+    except Exception as e:
+        print("Parsing error:", e)
+        return jsonify({"error": "Could not parse the response"}), 500
+
+    return {"data": stock_list}
 
 if __name__ == '__main__':
     app.run(debug=True, port=5501)

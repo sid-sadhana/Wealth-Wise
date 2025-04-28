@@ -40,7 +40,7 @@ useEffect(()=>{
 return(
 <div className="bg-black h-screen w-full" id="bg2">
 <div className="flex h-screen">
-<div className="h-screen w-20 border-r-2 border-r-gray-300">
+<div className="h-screen w-20  border-r-gray-300">
     <div className="space-y-8 items-center flex flex-col p-4 mt-36">
         <button onClick={()=>{navigate("/dashboard")}} className="border border-white p-2 rounded-lg border-opacity-20 bg-white bg-opacity-5"><img className="w-[100%] h-[100%]"/><Home></Home></button>
         <button onClick={()=>{navigate("/track")}} className="border border-white p-1.5 rounded-lg border-opacity-20 bg-white bg-opacity-5"><img className="w-[100%] h-[100%]"/><Graph></Graph></button>

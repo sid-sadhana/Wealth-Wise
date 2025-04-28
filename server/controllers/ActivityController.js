@@ -7,7 +7,7 @@ export const getnews = async (req, res) => {
             getJson({
                 api_key: process.env.SERP_API,
                 engine: "google",
-                q: "stock market news",
+                q: "american stock market",
                 location: "United States",
                 google_domain: "google.com",
                 gl: "us",
@@ -52,7 +52,7 @@ export const upload_data = async (req, res) => {
 
 export const get_data = async (req, res) => {
     try {
-
+        console.log(req.body)
         const userStockData = await user_data.findOne({ "username": req.body.username});
 
         if (!userStockData) {

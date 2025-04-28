@@ -38,18 +38,18 @@ const Dashboard = () => {
     <div>
       <Sidebar>
         <div className="flex flex-row space-x-2 p-2 h-full">
-          <div className="border border-white bg-white drop-shadow-none w-8/12 h-3/6 pr-4 pl-4 pt-6 pb-8 bg-opacity-10 rounded-xl border-opacity-10 transition-all duration-1000 shadow-transparent hover:shadow-gray-800 hover-drop-shadow-2xl shadow-md">
+          <div className="border border-white bg-white drop-shadow-none w-8/12 mt-12 mb-12 h-5/6 pr-4 pl-4 pt-6 pb-8 bg-opacity-10 rounded-xl border-opacity-10 transition-all duration-1000 shadow-transparent hover:shadow-gray-800 hover-drop-shadow-2xl shadow-md">
             <ChartOne/>
           </div>
           <div
             ref={scrollContainerRef}
-            className="scrollbar overflow-y-auto flex flex-col items-center space-y-4 drop-shadow-none w-4/12 h-3/6 pr-4 pl-4 pt-6 pb-8 rounded-xl border-opacity-10 transition-all duration-1000 shadow-transparent shadow-md"
+            className="scrollbar overflow-y-auto flex flex-col items-center space-y-4 drop-shadow-none w-4/12 h-5/6 pr-4 pl-4 pt-6 pb-8 rounded-xl border-opacity-10 transition-all duration-1000 shadow-transparent shadow-md mt-12 mb-12"
           >
             {news.map((price: any, index) => (
               <Link
                 to={price.link}
                 key={index}
-                className="bg-white bg-opacity-10 overflow-ellipsis flex h-28 border-l border-r border-t border-b border-l-teal-200 border-b-teal-200 border-t-violet-300 border-r-violet-300 w-11/12 p-4 drop-shadow-2xl rounded-lg hover:scale-105 transition-all duration-300 hover:border-r-teal-200 hover:border-t-teal-200 hover:border-b-violet-300 hover:border-l-violet-300"
+                className="bg-white bg-opacity-10 overflow-ellipsis flex h-40 border-l border-r border-t border-b border-l-teal-200 border-b-teal-200 border-t-violet-300 border-r-violet-300 w-11/12 p-4 drop-shadow-2xl rounded-lg hover:scale-105 transition-all duration-300 hover:border-r-teal-200 hover:border-t-teal-200 hover:border-b-violet-300 hover:border-l-violet-300"
               >
                 <img src={price.thumbnail} className="h-full mb-2 mr-4 rounded" />
                 <h1 className="text-white text-sm mr-4">{price.title}</h1>
