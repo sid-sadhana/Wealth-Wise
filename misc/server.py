@@ -6,9 +6,16 @@ import re
 import json
 import os
 from dotenv import load_dotenv
+import pandas as pd
+from prophet import Prophet
+import torch
+
 
 app = Flask(__name__)
-CORS(app, resources={r"/extract": {"origins": "http://localhost:3000"}}, supports_credentials=True)
+CORS(app, resources={
+    r"/extract": {"origins": "http://localhost:3000"},
+    r"/predict": {"origins": "http://localhost:3000"}
+}, supports_credentials=True)
 load_dotenv()
 
 # Retrieve the API key from environment variables
@@ -49,6 +56,35 @@ def extract():
         return jsonify({"error": "Could not parse the response"}), 500
 
     return {"data": stock_list}
+
+@app.route('/predict',methods=["POST"])
+def predict():
+    data=request.get_json()
+    print(data)
+
+    stock_data=pd.read_csv(r"C:\Users\srisi\OneDrive\Desktop\sidxt\showcase\Wealth-Wise\misc\archive\\"+data["stock"]+".csv")
+
+    if data["model"]=="PROPHET":
+        stock_data=stock_data[["Date","High"]]
+        stock_data = stock_data[["Date", "High"]]
+        stock_data = stock_data.rename(columns={"Date": "ds", "High": "y"})
+        print(stock_data)
+        m = Prophet()
+        m.fit(stock_data)
+        future = m.make_future_dataframe(periods=365)
+        forecast = m.predict(future)
+        forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].tail()
+        fig1 = m.plot(forecast)
+        fig1.savefig("prophet_forecast.jpg")
+    
+    elif data["model"]=="LSTM":
+        lstm = torch.nn.LSTM(10,20,2)
+        input = torch.randn(5, 3, 10)
+        h0 = torch.randn(2, 3, 20)
+        c0 = torch.randn(2, 3, 20)
+        output, (hn, cn) = lstm(input, (h0, c0))
+        print(output)
+    return jsonify(data)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5501)

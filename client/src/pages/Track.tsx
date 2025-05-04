@@ -30,10 +30,11 @@ const Track = () => {
         fetchInvestments();
     }, [username_from_store]);
 
-    const handlePredict = () => {
+    const handlePredict = async() => {
         console.log("Selected Model:", selectedModel);
         console.log("Selected Stock:", selectedStock);
         console.log("Slider Value:", sliderValue);
+        const response = await axios.post("http://localhost:5501/predict",{model:selectedModel,stock:selectedStock,value:sliderValue})
     };
 
     return (
@@ -41,7 +42,7 @@ const Track = () => {
             <Sidebar>
                 <div className="flex flex-col gap-8 p-8">
                     <div className="flex flex-wrap gap-6">
-                        {["PROPHET", "LSTM", "RNN", "GRU"].map((model) => (
+                        {["PROPHET", "LSTM"].map((model) => (
                             <label key={model} className="flex items-center gap-3 cursor-pointer text-white">
                                 <input
                                     type="radio"
